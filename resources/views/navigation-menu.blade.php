@@ -16,8 +16,25 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-            </div>
+                @if(auth()->check())
+                    @if(auth()->user()->role === 'student')
+                        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <x-nav-link href="{{ route('certificates.index') }}" :active="request()->routeIs('certificates.index')">
+                                {{ __('Certificados') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
 
+                    @if(auth()->user()->role === 'admin')
+                        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <x-nav-link href="{{ route('certificates.create') }}" :active="request()->routeIs('certificates.create')">
+                                {{ __('Crear certificados') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
+                @endif
+            </div>
+        @if(auth()->check())
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -215,5 +232,6 @@
                 @endif
             </div>
         </div>
+    @endif
     </div>
 </nav>
