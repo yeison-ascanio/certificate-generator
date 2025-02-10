@@ -16,7 +16,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/certificate', [CertificateController::class, 'index'])->name('certificates.index');
+    Route::get('/certificate', [CertificateController::class, 'index'])->middleware([\App\Http\Middleware\RoleMiddleware::class.':student'])->name('certificates.index');
 });
 
 Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify'])->name('certificates.verify');
