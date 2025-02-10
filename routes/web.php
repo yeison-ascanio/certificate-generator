@@ -16,12 +16,15 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/certificate', [CertificateController::class, 'index'])->middleware([\App\Http\Middleware\RoleMiddleware::class.':student'])->name('certificates.index');
+    
 });
 
 Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify'])->name('certificates.verify');
 
 
+Route::middleware(['auth:sanctum', \App\Http\Middleware\RoleMiddleware::class.':student'])->group(function () {
+    Route::get('/certificate', [CertificateController::class, 'index'])->name('certificates.index');
+});
 Route::middleware(['auth:sanctum', \App\Http\Middleware\RoleMiddleware::class.':admin'])->group(function () {
     Route::get('/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
     Route::post('/certificates/store', [CertificateController::class, 'generate'])->name('certificates.store');
